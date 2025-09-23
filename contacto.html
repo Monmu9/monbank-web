@@ -1,0 +1,89 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<title>Contacto - MONBANK</title>
+	<link rel="stylesheet" href="css/style.css">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+
+
+
+<body>
+	<header>
+		<h1 class="logo">MON<span class="accent">BANK</span></h1>
+		<button onclick="window.location.href='index.html'" id="cerrarSesion">
+			<i class="fas fa-arrow left"></i>Volver
+		</button>
+	</header>
+
+
+
+	<main>
+		<section>
+			<h2>Formulario de contacto</h2>
+			<form id="formContacto">
+				<label for="nombre">Nombre: </label>
+				<input type="text" id="nombre" required>
+			
+				<label for="email">Email: </label>
+				<input type="email" id="email" required>
+			
+				<label for="mensaje">Consulta: </label>
+				<textarea id="mensaje" rows="5" required></textarea>
+			
+				<button type="submit">Enviar consulta</button>
+		
+			</form>
+		</section>
+	</main>
+
+	<footer>
+		<div class="footer-left">
+			<p><strong>MONBANK S.A.</strong> - CIF: A12345678</p>
+			<P>&copy; 2025 MONBANK. Todos los derechos reservados.</P>
+		</div>
+		
+		<div class="footer-center">
+			<p>Dirección: Calle de la Banca 123, 13600 Alcázar de San Juan, Ciudad Real, España</p>
+			<p>Teléfono: +34 900 123 456 | Horario de atención: Lunes a Viernes 09:00-18:00</p>
+			<p>Email: contacto@monbank.es</p>
+		</div>
+		
+		<div class="footer-right">
+			<button onclick="window.location.href='contacto.html'">Contacta con nosotros</button>
+		</div>
+	</footer>
+
+
+	<script>
+		document.getElementById("formContacto").addEventListener("submit", function(e) {
+			e.preventDefault();
+			
+			const nombre = document.getElementById("nombre").value;
+			const email = document.getElementById("email").value;
+			const mensaje = document.getElementById("mensaje").value;
+			
+			const nuevaConsulta = {
+					fecha: new Date().toLocaleString(),
+					nombre,
+					email,
+					mensaje
+			};
+			
+			
+			const consultas = JSON.parse(localStorage.getItem("consultas")) || [];
+			consultas.unshift(nuevaConsulta);
+			localStorage.setItem("consultas", JSON.stringify(consultas));
+			
+			alert("Gracias por tu consulta. Te responderemos pronto ✅");
+			this.reset();
+		});
+	</script>
+
+
+</body>
+
+</html>

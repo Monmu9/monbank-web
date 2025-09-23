@@ -1,0 +1,110 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<title> Banca Simulada - MONBANK</title>
+	<link rel="stylesheet" href="css/style.css">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+
+
+
+<body class="oculto">
+	<div id="spinner" class="spinner-container">
+	  <div class="spinner"></div>
+	  <p>Cargando tu cuenta...</p>
+	</div>
+
+	
+	<header>
+		<h1 class="logo">MON<span class="accent">BANK</span></h1>
+		<p id="bienvenida"></p>
+		<button id="cerrarSesion" type="button">
+		  <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+		</button>
+	</header>
+	
+
+
+	
+	<section id="saldo">
+		<h2>Saldo actual</h2>
+		<p id="saldoTotal">Saldo actual: €0.00</p>
+	</section>
+	
+
+
+	
+	<section id="movimientos">
+		<h2>Últimos movimientos</h2>
+		<ul id="listaMovimientos"></ul>
+	</section>
+	
+	
+	
+	<section id="transferencia">
+		<h2>Simular transferencia</h2>
+		<form id="formTransferencia">
+			<label> Destino: </label>
+			<input type="text" id="destino" placeholder="IBAN o nombre" required><br> 
+			
+			<label>Cantidad: </label>
+			<input type="number" id="cantidad" placeholder="€" required><br>
+			
+			<label>Tipo de operación: </label>
+			<select id="tipoOperacion" required>
+				<option value="-">Gasto</option>
+				<option value="+">Ingreso</option>
+			</select><br>
+			
+			<button type="submit">
+				<i class="fas fa-paper-plane"></i> Enviar
+			</button>
+			
+		</form>
+	</section>
+	
+
+	<!--Placeholder: muestra un texto de ayuda dentro del campo de entrada. por ejemplo "€" en gris clarito dentro de la caja, el cual indica al usuario que debe introducir una cantidad y cuando lo haga desaparecerá el €.
+	Placeholder="€": es solo un texto temporal de ayuda
+	Value="€": sí sería un valor real dentro del input -->
+	
+	
+	
+	
+	<section id="consultas"> <!--Aquí es donde se guardarán las consultas que el cliente haga desde el formulario de contacto -->
+	  <h2>Consultas realizadas</h2>
+	  <ul id="listaConsultas"></ul>
+	</section>
+
+	
+	
+	
+	<script src="js/app.js"></script>
+	
+	
+<footer>
+	  <div class="footer-left">
+	    <p><strong>MONBANK S.A.</strong> - CIF: A12345678</p>
+		<p>&copy; 2025 MONBANK. Todos los derechos reservados.</p>
+	</div>
+	
+	<div class="footer-centre">
+		<p>Dirección: Calle de la Banca 123, 13600, Alcázar de San Juan, Ciudad Real</p>
+		<p>Teléfono: +34 900 123 456  |  Horario de atención: Lunes a Viernes, 09:00-18:00</p>
+		<p>Email: contacto@monbank.es</p>
+	</div>	
+	
+	<div class="footer-right">
+		<button onclick="window.location.href='contacto.html'">Contacta con nosotros</button>
+	</div>
+</footer>
+	
+	
+</body>
+</html>
+
