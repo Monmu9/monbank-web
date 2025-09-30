@@ -5,7 +5,35 @@
 <head>
 	<meta charset="UTF-8">
 	<title> Banca Simulada - MONBANK</title>
-	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/style.css"> <!--Estilos principales-->
+	
+	<style> 	<!--Estilo para modo oscuro-->
+	  body.dark-mode {
+	    background-color: black !important;
+	    color: white !important;
+	  }
+	  body.dark-mode header,
+	   body.dark-mode section,
+	   body.dark-mode footer {
+	     background-color: #1e1e1e !important;
+	     color: #f0f0f0 !important;
+	   }
+
+	   body.dark-mode input,
+	   body.dark-mode textarea,
+	   body.dark-mode select {
+	     background-color: #2a2a2a !important;
+	     color: #ffffff !important;
+	     border: 1px solid #555;
+	   }
+
+	   body.dark-mode button {
+	     background-color: #444 !important;
+	     color: #fff !important;
+	   }
+	</style>
+
+	
 	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -23,6 +51,7 @@
 	<header>
 		<h1 class="logo">MON<span class="accent">BANK</span></h1>
 		<p id="bienvenida"></p>
+		<button id="toggleModo">Modo oscuro 🌙</button>
 		<button id="cerrarSesion" type="button">
 		  <i class="fas fa-sign-out-alt"></i> Cerrar sesión
 		</button>
@@ -35,6 +64,15 @@
 		<h2>Saldo actual</h2>
 		<p id="saldoTotal">Saldo actual: €0.00</p>
 	</section>
+	
+	
+	<section id="grafico">
+	  <h2>Evolución del saldo</h2>
+	  <div class="grafico-container">
+	  		<canvas id="graficoSaldo"></canvas>
+		</div>
+	</section>
+
 	
 
 
@@ -75,6 +113,26 @@
 	
 	
 	
+	<section id="formularioContacto">
+	  <h2>Formulario de contacto</h2>
+	  <form id="formContacto">
+	    <label>Nombre:</label>
+	    <input type="text" id="nombre" placeholder="Tu nombre" required><br>
+
+	    <label>Email:</label>
+	    <input type="email" id="email" placeholder="Tu email" required><br>
+
+	    <label>Mensaje:</label>
+	    <textarea id="mensaje" placeholder="Tu mensaje" required></textarea><br>
+
+	    <button type="submit">
+	      <i class="fas fa-envelope"></i> Enviar consulta
+	    </button>
+	  </form>
+	</section>
+
+	
+	
 	
 	<section id="consultas"> <!--Aquí es donde se guardarán las consultas que el cliente haga desde el formulario de contacto -->
 	  <h2>Consultas realizadas</h2>
@@ -84,7 +142,30 @@
 	
 	
 	
-	<script src="js/app.js"></script>
+	
+	<!-- Firebase SDK para web clasica, para la base de datos de FIREBASE -->
+	<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+	<script>
+	  const firebaseConfig = {
+	    apiKey: "AIzaSyCd6_MxaVfbFsaR3a-evMNfMKUq4Z1TzZE",
+	    authDomain: "monbank-e9fc4.firebaseapp.com",
+	    projectId: "monbank-e9fc4",
+	    storageBucket: "monbank-e9fc4.firebasestorage.app",
+	    messagingSenderId: "357132279829",
+	    appId: "1:357132279829:web:7cc18fdea5b3b1ebaa6e1c"
+	  };
+
+	  firebase.initializeApp(firebaseConfig);
+	  const db = firebase.firestore();
+	</script>
+
+
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script> <!--carga la libreria Chart.js, sirve para crear gráficos interactivos y personalizables en web usando canvas.-->
+	<script src="js/app.js"></script> <!--carga el archivo propio app.js que está en la carpeta js/ del proyecto.-->
+	
+	
 	
 	
 <footer>

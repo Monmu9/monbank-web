@@ -295,6 +295,7 @@ button:active {
 
 
 
+
 footer {
   display: flex;
   justify-content:space-between;
@@ -367,8 +368,73 @@ textarea { 	/*es el espacio de texto del formulario de contacto*/
 
 body.oculto > *:not(#spinner) {
   display: none;
+}
   
   
+ 
+ 
+ /* Botón de modo OSCURO/CLARO */
+#toggleModo {
+  position: static;
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+ 
+ 
+
+  
+  
+  
+  
+  /*AHORA GESTIONO EL BOTON MODO OSCURO*/
+
+body.dark-mode {
+  background-color: #0d1117;
+  color: #c9d1d9;
+}
+
+body.dark-mode section {
+  background-color: #161b22;
+  color: #c9d1d9;
+}
+
+body.dark-mode #listaMovimientos li {
+  background-color: #21262d;
+  color: #c9d1d9;
+}
+
+body.dark-mode .texto-movimiento {
+  color: #c9d1d9;
+}
+
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+  background-color: #0d1117;
+  color: #c9d1d9;
+  border: 1px solid #30363d;
+}
+
+body.dark-mode button {
+  background-color: #238636;
+  color: white;
+}
+
+body.dark-mode .fa-arrow-up {
+  color: #3fb950;
+}
+
+body.dark-mode .fa-arrow-down {
+  color: #f85149;
+}
+
+
+
   
   
   
@@ -411,6 +477,28 @@ body.oculto > *:not(#spinner) {
   }
 }
   
+
+
+
+
+
+
+body { 		/*Este es el borde de toda la pagina que hay en azul*/
+  border: 5px solid #2b118e;
+}
+
+
+
+
+.grafico-container {
+  max-width: 400px;
+  margin: auto;
+}
+
+#graficoSaldo {
+  width: 100% !important;
+  height: auto !important;
+  display: block;
 }
 
 
