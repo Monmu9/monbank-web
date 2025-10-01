@@ -26,12 +26,35 @@
 			
 			<button type="submit">Entrar</button>
 		</form>
+		
+		
+		
+		<p style="margin-top: 20px; font-size: 14px; color: #555;">
+  			¿No tienes cuenta? Puedes acceder a una versión demo sin registro.
+		</p>
+		
+
+		<button id="demoBtn" type="button"
+ 		 style="margin-top: 10px; background-color: #43a047; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer;">
+  			Accede a la Demo 🚀
+		</button>
+		
+		
+		
 		<p id="mensaje"></p>
 	</section>
 	
 	
 	
 	 <script src="js/login.js"></script>
+	 
+	 
+	 <script> <!--Este es el script para activar el botón demo-->
+        document.getElementById("demoBtn").addEventListener("click", function () {
+            localStorage.setItem("usuarioLogueado", "demoUser");
+            window.location.href = "index.html";
+        });
+    </script>
 </body>
 </html>
 

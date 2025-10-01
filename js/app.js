@@ -8,6 +8,7 @@ window.addEventListener("DOMContentLoaded", function () {
     document.body.classList.remove("oculto");
   }, 1500);
 
+  
   const usuario = localStorage.getItem("usuarioLogueado");
   const bienvenida = document.getElementById("bienvenida");
   const botonCerrar = document.getElementById("cerrarSesion");
@@ -305,6 +306,9 @@ window.addEventListener("DOMContentLoaded", function () {
 	  });
 	  
 	} //Esta cierra la función cargarMovimientosDesdeFirebase
+	
+	
+	
 	
 });//Esta llave cierra el window.addEventListener
   
