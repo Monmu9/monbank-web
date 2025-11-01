@@ -1,0 +1,91 @@
+
+{
+  "movimientos": [
+    {
+      "fecha": "2025-10-28T09:15:00",
+      "tipo": "+",
+      "cantidad": "1900.00",
+      "destino": "Nómina mensual - Empresa MMC S.L."
+    },
+    {
+      "fecha": "2025-10-28T14:30:00",
+      "tipo": "-",
+      "cantidad": "45.50",
+      "destino": "Mercadona"
+    },
+    {
+      "fecha": "2025-10-29T10:20:00",
+      "tipo": "-",
+      "cantidad": "80.00",
+      "destino": "Gasolina Repsol"
+    },
+    {
+      "fecha": "2025-10-29T14:35:00",
+      "tipo": "-",
+      "cantidad": "650.00",
+      "destino": "Alquiler"
+    },
+    {
+      "fecha": "2025-10-29T18:45:00",
+      "tipo": "+",
+      "cantidad": "150.00",
+      "destino": "Transferencia"
+    },
+    {
+      "fecha": "2025-10-30T11:00:00",
+      "tipo": "-",
+      "cantidad": "35.75",
+      "destino": "Restaurante Italiano"
+    },
+    {
+      "fecha": "2025-10-30T16:30:00",
+      "tipo": "-",
+      "cantidad": "120.00",
+      "destino": "Factura electricidad Iberdrola"
+    },
+    {
+      "fecha": "2025-10-31T09:00:00",
+      "tipo": "+",
+      "cantidad": "50.00",
+      "destino": "Bizum"
+    },
+    {
+      "fecha": "2025-10-31T15:20:00",
+      "tipo": "-",
+      "cantidad": "68.90",
+      "destino": "Amazon"
+    },
+    {
+      "fecha": "2025-11-01T10:45:00",
+      "tipo": "-",
+      "cantidad": "25.00",
+      "destino": "Netflix"
+    },
+    {
+      "fecha": "2025-11-01T12:30:00",
+      "tipo": "+",
+      "cantidad": "75.00",
+      "destino": "Venta Vinted"
+    }
+  ],
+  "consultas": [
+    {
+      "fecha": "2025-10-29T16:45:00",
+      "nombre": "Montse Muñoz",
+      "email": "montse.muñoz@email.com",
+      "mensaje": "Buenos días, me gustaría información sobre las condiciones de la hipoteca para jóvenes menores de 35 años. ¿Podrían enviarme un folleto informativo? Gracias."
+    },
+    {
+      "fecha": "2025-10-31T11:20:00",
+      "nombre": "Montse Muñoz",
+      "email": "montse.muñoz@email.com",
+      "mensaje": "Hola, quiero solicitar una tarjeta de crédito con límite de 3000€. ¿Cuáles son los requisitos y el plazo de tramitación? Además, ¿tiene coste de mantenimiento anual?"
+    },
+    {
+      "fecha": "2025-11-01T09:30:00",
+      "nombre": "Montse Muñoz",
+      "email": "montse.muñoz@email.com",
+      "mensaje": "Me gustaría contratar un plan de ahorro para mi jubilación. ¿Qué opciones tenéis disponibles y cuál sería la rentabilidad estimada? Espero vuestra respuesta. Saludos."
+    }
+  ]
+}

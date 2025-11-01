@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -66,7 +65,7 @@
 	</section>
 	
 	
-	<section id="grafico">
+	<section id="grafico"> <!--este es el gráfico de la evolución del saldo-->
 	  <h2>Evolución del saldo</h2>
 	  <div class="grafico-container">
 	  		<canvas id="graficoSaldo"></canvas>
@@ -106,14 +105,15 @@
 		</form>
 	</section>
 	
-
+	
+	
 	<!--Placeholder: muestra un texto de ayuda dentro del campo de entrada. por ejemplo "€" en gris clarito dentro de la caja, el cual indica al usuario que debe introducir una cantidad y cuando lo haga desaparecerá el €.
 	Placeholder="€": es solo un texto temporal de ayuda
 	Value="€": sí sería un valor real dentro del input -->
 	
 	
 	
-	<section id="formularioContacto">
+	<section id="formularioContacto"> <!--Este es el formulario para realizar consultas-->
 	  <h2>Formulario de contacto</h2>
 	  <form id="formContacto">
 	    <label>Nombre:</label>
@@ -143,25 +143,6 @@
 	
 	
 	
-	<!-- Firebase SDK para web clasica, para la base de datos de FIREBASE -->
-	<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
-	<script>
-	  const firebaseConfig = {
-	    apiKey: "AIzaSyCd6_MxaVfbFsaR3a-evMNfMKUq4Z1TzZE",
-	    authDomain: "monbank-e9fc4.firebaseapp.com",
-	    projectId: "monbank-e9fc4",
-	    storageBucket: "monbank-e9fc4.firebasestorage.app",
-	    messagingSenderId: "357132279829",
-	    appId: "1:357132279829:web:7cc18fdea5b3b1ebaa6e1c"
-	  };
-
-	  firebase.initializeApp(firebaseConfig);
-	  const db = firebase.firestore();
-	</script>
-
-
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script> <!--carga la libreria Chart.js, sirve para crear gráficos interactivos y personalizables en web usando canvas.-->
 	<script src="js/app.js"></script> <!--carga el archivo propio app.js que está en la carpeta js/ del proyecto.-->
 	
@@ -188,4 +169,3 @@
 	
 </body>
 </html>
-

@@ -1,6 +1,7 @@
 
 
 
+
 window.addEventListener("DOMContentLoaded", function () {
   const spinner = document.getElementById("spinner");
   setTimeout(() => {
@@ -65,71 +66,87 @@ window.addEventListener("DOMContentLoaded", function () {
       }
 
       const nuevaConsulta = {
-        fecha: new Date(),
+        fecha: new Date().toISOString(),
         nombre: nombre,
         email: email,
         mensaje: mensaje
       };
 
-      db.collection("consultas").add(nuevaConsulta)
-        .then(() => {
-          alert("Consulta enviada correctamente ✅");
-          formContacto.reset();
-          cargarConsultasDesdeFirebase();
-        })
-        .catch((error) => {
-          console.error("Error al guardar la consulta:", error);
-          alert("Hubo un error al enviar la consulta.");
-        });
+      // Guardar en localStorage en lugar de Firebase
+      const consultasGuardadas = JSON.parse(localStorage.getItem("consultas_demo")) || [];
+      consultasGuardadas.unshift(nuevaConsulta);
+      localStorage.setItem("consultas_demo", JSON.stringify(consultasGuardadas));
+
+      alert("Consulta enviada correctamente ✅");
+      formContacto.reset();
+      cargarConsultas();
     });
   }
 
   // Consultas guardadas
   if (listaConsultas) {
-    cargarConsultasDesdeFirebase();
+    cargarConsultas();
   }
 
-  function cargarConsultasDesdeFirebase() {
-    db.collection("consultas")
-      .orderBy("fecha", "desc")
-      .get()
-      .then((querySnapshot) => {
+  function cargarConsultas() {
+    // Cargar consultas desde datos.json y localStorage
+    fetch('datos.json')
+      .then(response => response.json())
+      .then(data => {
+        const consultasJSON = data.consultas || [];
+        const consultasLocal = JSON.parse(localStorage.getItem("consultas_demo")) || [];
+        const todasConsultas = [...consultasLocal, ...consultasJSON];
+
+        // Ordenar por fecha descendente
+        todasConsultas.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
         listaConsultas.innerHTML = "";
-        querySnapshot.forEach((doc) => {
-          const consulta = doc.data();
+        todasConsultas.forEach((consulta, index) => {
           const li = document.createElement("li");
+          const fechaObj = new Date(consulta.fecha);
+          const fechaFormateada = fechaObj.toLocaleString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+
           li.innerHTML = `
-		  	<strong>${new Date(consulta.fecha.seconds * 1000).toLocaleString()}</strong><br>
+            <strong>${fechaFormateada}</strong><br>
             <em>${consulta.nombre} (${consulta.email})</em><br>
             ${consulta.mensaje}
           `;
           li.style.marginBottom = "15px";
 
-          const btnEliminar = document.createElement("button");
-          btnEliminar.textContent = "Eliminar";
-          btnEliminar.style.marginLeft = "10px";
+          // Solo permitir eliminar consultas del localStorage
+          if (index < consultasLocal.length) {
+            const btnEliminar = document.createElement("button");
+            btnEliminar.textContent = "Eliminar";
+            btnEliminar.style.marginLeft = "10px";
 
-          btnEliminar.addEventListener("click", function () {
-            db.collection("consultas").doc(doc.id).delete()
-              .then(() => {
-                cargarConsultasDesdeFirebase();
-              })
-              .catch((error) => {
-                console.error("Error al eliminar la consulta:", error);
-                alert("Hubo un error al eliminar la consulta.");
-              });
-          });
+            btnEliminar.addEventListener("click", function () {
+              consultasLocal.splice(index, 1);
+              localStorage.setItem("consultas_demo", JSON.stringify(consultasLocal));
+              cargarConsultas();
+            });
 
-          li.appendChild(btnEliminar);
+            li.appendChild(btnEliminar);
+          }
+
           listaConsultas.appendChild(li);
         });
+      })
+      .catch(error => {
+        console.error("Error al cargar consultas:", error);
+        listaConsultas.innerHTML = "<li>Error al cargar las consultas</li>";
       });
   }
 
   // Movimientos
   let movimientos = [];
   let graficoSaldoChart = null;
-  cargarMovimientosDesdeFirebase();
+  cargarMovimientos();
 
   
   
@@ -149,35 +166,46 @@ window.addEventListener("DOMContentLoaded", function () {
     listaMovimientos.innerHTML = "";
     let saldo = 0;
 
-    movimientos.forEach((mov) => {
-		// Convertimos el timestamp a fecha legible
-		    const fechaLegible = mov.fecha instanceof Date
-		      ? mov.fecha.toLocaleString()
-		      : new Date(mov.fecha.seconds * 1000).toLocaleString();
-
-		    const li = document.createElement("li");
-			li.innerHTML = `
-			  <i class="fas ${mov.tipo === '+' ? 'fa-arrow-up text-green' : 'fa-arrow-down text-red'}"></i>
-			  <span class="texto-movimiento">${fechaLegible} - €${mov.cantidad} | ${mov.destino}</span>
-			`;
-		    li.classList.add(mov.tipo === "+" ? "ingreso" : "gasto");
-
-      const btnEliminar = document.createElement("button");
-      btnEliminar.textContent = "Eliminar";
-      btnEliminar.style.marginLeft = "10px";
-
-      btnEliminar.addEventListener("click", function () {
-        db.collection("movimientos").doc(mov.id).delete()
-          .then(() => {
-            cargarMovimientosDesdeFirebase();
-          })
-          .catch((error) => {
-            console.error("Error al eliminar:", error);
-            alert("Hubo un error al eliminar el movimiento.");
-          });
+    movimientos.forEach((mov, index) => {
+      // Convertimos el timestamp a fecha legible
+      const fechaObj = new Date(mov.fecha);
+      const fechaLegible = fechaObj.toLocaleString('es-ES', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
       });
 
-      li.appendChild(btnEliminar);
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <i class="fas ${mov.tipo === '+' ? 'fa-arrow-up text-green' : 'fa-arrow-down text-red'}"></i>
+        <span class="texto-movimiento">${fechaLegible} - €${mov.cantidad} | ${mov.destino}</span>
+      `;
+      li.classList.add(mov.tipo === "+" ? "ingreso" : "gasto");
+
+      // Solo permitir eliminar movimientos creados por el usuario (no los del JSON)
+      if (mov.esNuevo) {
+        const btnEliminar = document.createElement("button");
+        btnEliminar.textContent = "Eliminar";
+        btnEliminar.style.marginLeft = "10px";
+
+        btnEliminar.addEventListener("click", function () {
+          const movimientosLocal = JSON.parse(localStorage.getItem("movimientos_demo")) || [];
+          const indexEnLocal = movimientosLocal.findIndex(m => 
+            m.fecha === mov.fecha && m.cantidad === mov.cantidad && m.destino === mov.destino
+          );
+          
+          if (indexEnLocal !== -1) {
+            movimientosLocal.splice(indexEnLocal, 1);
+            localStorage.setItem("movimientos_demo", JSON.stringify(movimientosLocal));
+            cargarMovimientos();
+          }
+        });
+
+        li.appendChild(btnEliminar);
+      }
+
       listaMovimientos.appendChild(li);
 
       const cantidad = parseFloat(mov.cantidad);
@@ -196,57 +224,62 @@ window.addEventListener("DOMContentLoaded", function () {
 	
 
 
-	  // Añado gráfica de evolución del saldo
-	  const canvas = document.getElementById("graficoSaldo");
-	  if (canvas) {
-	    const fechas = movimientos.map(m => {
-	      return m.fecha instanceof Date
-	        ? m.fecha.toLocaleDateString()
-	        : new Date(m.fecha.seconds * 1000).toLocaleDateString();
-	    });
+    // Añado gráfica de evolución del saldo
+    const canvas = document.getElementById("graficoSaldo");
+    if (canvas) {
+      // Invertir el orden para la gráfica (de más antiguo a más reciente)
+      const movimientosParaGrafica = [...movimientos].reverse();
+      
+      const fechas = movimientosParaGrafica.map(m => {
+        const fechaObj = new Date(m.fecha);
+        return fechaObj.toLocaleDateString('es-ES', {
+          day: '2-digit',
+          month: '2-digit'
+        });
+      });
 
-	    const saldos = calcularSaldosAcumulados(movimientos);
+      const saldos = calcularSaldosAcumulados(movimientosParaGrafica);
 
-	    console.log("Fechas:", fechas);
-	    console.log("Saldos:", saldos);
+      console.log("Fechas:", fechas);
+      console.log("Saldos:", saldos);
 
-	    const ctx = canvas.getContext("2d");
+      const ctx = canvas.getContext("2d");
 
-	    // Destruir gráfico anterior si existe
-	    if (graficoSaldoChart) {
-	      graficoSaldoChart.destroy();
-	    }
+      // Destruir gráfico anterior si existe
+      if (graficoSaldoChart) {
+        graficoSaldoChart.destroy();
+      }
 	
-	    // Crear nuevo gráfico
-	    graficoSaldoChart = new Chart(ctx, {
-	      type: 'line',
-	      data: {
-	        labels: fechas,
-	        datasets: [{
-	          label: 'Saldo (€)',
-	          data: saldos,
-	          borderColor: '#3949ab',
-	          backgroundColor: 'rgba(57, 73, 171, 0.1)',
-	          fill: true,
-	          tension: 0.3
-	        }]
-	      },
-	      options: {
-	        responsive: true,
-	        plugins: {
-	          legend: {
-	            display: true
-	          }
-	        },
-	        scales: {
-	          y: {
-	            beginAtZero: true
-	          }
-	        }
-	      }
-	    });
-	  }
-	}
+      // Crear nuevo gráfico
+      graficoSaldoChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: fechas,
+          datasets: [{
+            label: 'Saldo (€)',
+            data: saldos,
+            borderColor: '#3949ab',
+            backgroundColor: 'rgba(57, 73, 171, 0.1)',
+            fill: true,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: true
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+  }
 
   
   
@@ -265,47 +298,46 @@ window.addEventListener("DOMContentLoaded", function () {
       }
 
       const nuevoMovimiento = {
-        fecha: new Date(),
+        fecha: new Date().toISOString(),
         tipo: tipo,
         cantidad: cantidad.toFixed(2),
-        destino: destino
+        destino: destino,
+        esNuevo: true
       };
 
-      db.collection("movimientos").add({
-        usuario: usuario,
-        ...nuevoMovimiento
-      })
-        .then(() => {
-          alert("Transferencia simulada correctamente ✅");
-          form.reset();
-          cargarMovimientosDesdeFirebase();
-        })
-        .catch((error) => {
-          console.error("Error al guardar:", error);
-          alert("Hubo un error al guardar el movimiento.");
-        });
+      // Guardar en localStorage
+      const movimientosLocal = JSON.parse(localStorage.getItem("movimientos_demo")) || [];
+      movimientosLocal.unshift(nuevoMovimiento);
+      localStorage.setItem("movimientos_demo", JSON.stringify(movimientosLocal));
+
+      alert("Transferencia simulada correctamente ✅");
+      form.reset();
+      cargarMovimientos();
     });
   }
 
-  function cargarMovimientosDesdeFirebase() {
-    db.collection("movimientos")
-      .where("usuario", "==", usuario)
-      .orderBy("fecha", "desc")
-	  .get()
-	  .then((querySnapshot) => {
-	    movimientos = [];
-	    querySnapshot.forEach((doc) => {
-	      const mov = doc.data();
-	      mov.id = doc.id;
-	      movimientos.push(mov);
-	    });
-	    mostrarMovimientos();
-	  })
-	  .catch((error) => {
-	    console.error("Error al cargar movimientos:", error);
-	  });
-	  
-	} //Esta cierra la función cargarMovimientosDesdeFirebase
+  function cargarMovimientos() {
+    // Cargar movimientos desde datos.json y localStorage
+    fetch('datos.json')
+      .then(response => response.json())
+      .then(data => {
+        const movimientosJSON = data.movimientos || [];
+        const movimientosLocal = JSON.parse(localStorage.getItem("movimientos_demo")) || [];
+        
+        // Marcar los nuevos movimientos
+        movimientosLocal.forEach(mov => mov.esNuevo = true);
+        
+        // Combinar y ordenar
+        movimientos = [...movimientosLocal, ...movimientosJSON];
+        movimientos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+        
+        mostrarMovimientos();
+      })
+      .catch(error => {
+        console.error("Error al cargar movimientos:", error);
+        listaMovimientos.innerHTML = "<li>Error al cargar los movimientos</li>";
+      });
+  } //Esta cierra la función cargarMovimientos
 	
 	
 	

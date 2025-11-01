@@ -153,8 +153,9 @@ button:active {
   border-left: 5px solid #3949ab;
   border-radius: 5px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
+  gap: 10px;
   animation: fadeIn 0.9s ease-in-out;
 }
 
@@ -171,10 +172,18 @@ button:active {
   border-left: 5px solid #e53935; /* rojo */
 }
 
+
+/* Hacer que el texto ocupe el espacio disponible */
+#listaMovimientos .texto-movimiento {
+  flex: 1; /* ← El texto ocupa el espacio central */
+}
+
+
 #listaMovimientos button {
   background-color: #e0e0e0;
   border: none;
   padding: 5px 10px;
+  margin-left: auto;
   border-radius: 4px;
   cursor: pointer;
 }
